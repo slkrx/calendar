@@ -23,6 +23,7 @@
           type="week"
           v-bind:events="events"
           v-model="value"
+          v-bind:event-color="getEventColor"
         ></v-calendar>
       </v-sheet>
     </v-col>
@@ -43,10 +44,15 @@ export default {
           name: 'this is an event',
           start: start,
           end: end,
-          color: 'green',
+          color: 'orange',
           timed: true
         }
       ]
+    }
+  },
+  methods: {
+    getEventColor(event) {
+      return event.color
     }
   }
 }
