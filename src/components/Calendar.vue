@@ -1,41 +1,34 @@
 <template>
-  <v-row>
-    <v-col>
-      <v-sheet>
-        <v-btn
-          icon
-          class="ma-2"
-          @click="$refs.calendar.prev()"
-        >
-          <v-icon>mdi-chevron-left</v-icon>
-        </v-btn>
-        <v-btn
-          icon
-          class="ma-2"
-          @click="$refs.calendar.next()"
-        >
-          <v-icon>mdi-chevron-right</v-icon>
-        </v-btn>
-      </v-sheet>
-      <v-sheet>
-        <v-calendar
-          ref="calendar"
-          type="week"
-          v-bind:events="events"
-          v-model="value"
-          v-bind:event-color="getEventColor"
-        ></v-calendar>
-      </v-sheet>
-    </v-col>
-  </v-row>
+  <v-container>
+    <CalendarNavigator
+      @timeTravelPrev="$refs.calendar.prev()"
+      @timeTravelNext="$refs.calendar.next()"
+    />
+    <v-row>
+      <v-col>
+        <v-sheet>
+          <v-calendar
+            ref="calendar"
+            type="week"
+            v-bind:events="events"
+            v-model="value"
+            v-bind:event-color="getEventColor"
+          ></v-calendar>
+        </v-sheet>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
+import CalendarNavigator from './CalendarNavigator'
+
 let start = new Date()
 let end = new Date(start)
 end.setHours(start.getHours() + 3)
 
 export default {
+  components: { CalendarNavigator },
   data: function() {
     return {
       value: '',
