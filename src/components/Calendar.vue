@@ -3,6 +3,7 @@
     <CalendarNavigator
       @timeTravelPrev="$refs.calendar.prev()"
       @timeTravelNext="$refs.calendar.next()"
+      v-bind:value.sync="value"
     />
     <v-row>
       <v-col>
@@ -31,7 +32,7 @@ export default {
   components: { CalendarNavigator },
   data: function() {
     return {
-      value: '',
+      value: new Date().toISOString().substr(0, 10),
       events: [
         {
           name: 'this is an event',
