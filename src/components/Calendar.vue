@@ -14,7 +14,19 @@
             v-bind:events="events"
             v-model="value"
             v-bind:event-color="getEventColor"
+            v-on:click:event="showEvent"
           ></v-calendar>
+          <v-menu
+              v-model="selectedOpen"
+              :close-on-content-click="false"
+              :activator="selectedElement"
+              offset-x
+          >
+            <CalendarEventShow
+              v-bind.sync="selectedEvent"
+              v-bind:selectedOpen.sync="selectedOpen"
+            />
+          </v-menu>
         </v-sheet>
       </v-col>
     </v-row>
@@ -38,14 +50,22 @@
 <script>
 import CalendarNavigator from './CalendarNavigator'
 import NewTaskWindow from './NewTaskWindow.vue'
+import CalendarEventShow from './CalendarEventShow'
 
 export default {
-  components: { CalendarNavigator, NewTaskWindow },
+  components: {
+    CalendarNavigator,
+    NewTaskWindow,
+    CalendarEventShow
+  },
   data: function() {
     return {
       value: new Date().toISOString().substr(0, 10),
       events: [],
-      showModal: false
+      showModal: false,
+      selectedEvent: {},
+      selectedElement: null,
+      selectedOpen: false
     }
   },
   methods: {
@@ -67,6 +87,24 @@ export default {
                         color: color,
                         timed: true
                       });
+    },
+    showEvent({ nativeEvent, event }) {
+      const open = () => {
+        this.selectedEvent = event
+        this.selectedElement = nativeEvent.target
+        setTimeout(() => {
+          this.selectedOpen = true
+        }, 10)
+      }
+
+      if (this.selectedOpen) {
+        this.selectedOpen = false
+        setTimeout(open, 10)
+      } else {
+        open()
+      }
+
+      nativeEvent.stopPropagation()
     }
   }
 }
