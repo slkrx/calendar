@@ -85,7 +85,8 @@ export default {
                         start: startDate,
                         end: endDate,
                         color: color,
-                        timed: true
+                        timed: true,
+                        description: ''
                       });
     },
     showEvent({ nativeEvent, event }) {
