@@ -18,35 +18,55 @@
         </v-sheet>
       </v-col>
     </v-row>
+    <v-row justify='end'>
+      <v-btn
+        icon
+        id="addTaskButton"
+        @click="showModal = true"
+      >
+        <v-icon>mdi-plus-circle-outline</v-icon>
+      </v-btn>
+    </v-row>
+    <NewTaskWindow
+      v-if="showModal"
+      @close="showModal = false"
+      @addEvent="addEvent"
+    />
   </v-container>
 </template>
 
 <script>
 import CalendarNavigator from './CalendarNavigator'
-
-let start = new Date()
-let end = new Date(start)
-end.setHours(start.getHours() + 3)
+import NewTaskWindow from './NewTaskWindow.vue'
 
 export default {
-  components: { CalendarNavigator },
+  components: { CalendarNavigator, NewTaskWindow },
   data: function() {
     return {
       value: new Date().toISOString().substr(0, 10),
-      events: [
-        {
-          name: 'this is an event',
-          start: start,
-          end: end,
-          color: 'orange',
-          timed: true
-        }
-      ]
+      events: [],
+      showModal: false
     }
   },
   methods: {
     getEventColor(event) {
       return event.color
+    },
+    addEvent(name, date, startTime, endTime, color) {
+      let startDate = new Date(date + 'T00:00:00');
+      let endDate =  new Date(date + 'T00:00:00');
+      let [startHour, startMinute] = startTime.split(':');
+      let [endHour, endMinute] = endTime.split(':');
+      startDate.setHours(startHour);
+      startDate.setMinutes(startMinute);
+      endDate.setHours(endHour);
+      endDate.setMinutes(endMinute);
+      this.events.push({name: name,
+                        start: startDate,
+                        end: endDate,
+                        color: color,
+                        timed: true
+                      });
     }
   }
 }
