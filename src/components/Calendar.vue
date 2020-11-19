@@ -10,6 +10,7 @@
         <v-sheet
           height="70vh"
           elevation="3"
+          style="position: relative;"
         >
           <v-calendar
             ref="calendar"
@@ -30,17 +31,22 @@
               v-bind:selectedOpen.sync="selectedOpen"
             />
           </v-menu>
+          <v-btn
+            id="addTaskButton"
+            @click="showModal = true"
+            fab
+            absolute
+            bottom
+            right
+            color="green"
+            dark
+            elevation="5"
+            large
+          >
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
         </v-sheet>
       </v-col>
-    </v-row>
-    <v-row justify='end'>
-      <v-btn
-        icon
-        id="addTaskButton"
-        @click="showModal = true"
-      >
-        <v-icon>mdi-plus-circle-outline</v-icon>
-      </v-btn>
     </v-row>
     <NewTaskWindow
       v-if="showModal"
