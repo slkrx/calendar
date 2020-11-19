@@ -7,7 +7,10 @@
     />
     <v-row>
       <v-col>
-        <v-sheet>
+        <v-sheet
+          height="70vh"
+          elevation="3"
+        >
           <v-calendar
             ref="calendar"
             type="week"
@@ -107,6 +110,9 @@ export default {
 
       nativeEvent.stopPropagation()
     }
+  },
+  mounted: function() {
+    this.$refs.calendar.scrollToTime('06:00')
   }
 }
 </script>
