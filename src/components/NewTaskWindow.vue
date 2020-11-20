@@ -115,7 +115,7 @@
   .modal {
     background: #FFFFFF;
     box-shadow: 2px 2px 20px 1px;
-    height: 90vh; 
+    height: 70vh; 
     overflow-y: auto;
   }
 

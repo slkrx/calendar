@@ -1,11 +1,20 @@
 <template>
-    <v-row justify="center">
+    <v-toolbar
+      flat
+    >
       <v-btn
         icon
         class="ma-2"
         @click="$emit('timeTravelPrev')"
       >
         <v-icon>mdi-chevron-left</v-icon>
+      </v-btn>
+      <v-btn
+        icon
+        class="ma-2"
+        @click="$emit('timeTravelNext')"
+      >
+        <v-icon>mdi-chevron-right</v-icon>
       </v-btn>
       <v-menu
         v-model="isMenuOpen"
@@ -15,11 +24,13 @@
       >
         <template v-slot:activator="{ on, attrs }">
             <v-text-field
-                v-bind:value="value"
-                readonly
-                prepend-icon="mdi-calendar"
-                v-bind="attrs"
-                v-on="on"
+              v-bind:value="formattedDate"
+              readonly
+              prepend-icon="mdi-calendar"
+              v-bind="attrs"
+              v-on="on"
+              hide-details
+              single-line
             ></v-text-field>
         </template>
         <v-date-picker
@@ -27,14 +38,7 @@
             @input="$emit('update:value', $event); isMenuOpen = false"
         />
       </v-menu>
-      <v-btn
-        icon
-        class="ma-2"
-        @click="$emit('timeTravelNext')"
-      >
-        <v-icon>mdi-chevron-right</v-icon>
-      </v-btn>
-    </v-row>
+    </v-toolbar>
 </template>
 
 <script>
@@ -46,6 +50,11 @@ export default {
         return {
             isMenuOpen: false
         }
+    },
+    computed: {
+      formattedDate() {
+        return this.$moment(this.value).format('dddd, MMMM Do YYYY')
+      }
     }
 }
 </script>
