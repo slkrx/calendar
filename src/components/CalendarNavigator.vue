@@ -2,6 +2,27 @@
     <v-toolbar
       flat
     >
+      <template v-if="itIsToday">
+        <v-btn
+          @click="$emit('update:value', new Date().toISOString().substr(0, 10))"
+          outlined="true"
+          flat
+          color="primary"
+        >
+          Today
+        </v-btn>
+      </template>
+      <template v-else>
+        <v-btn
+          @click="$emit('update:value', new Date().toISOString().substr(0, 10))"
+          color="primary"
+          dark
+          flat
+          depressed
+        >
+          Today
+        </v-btn>
+      </template>
       <v-btn
         icon
         class="ma-2"
@@ -54,6 +75,9 @@ export default {
     computed: {
       formattedDate() {
         return this.$moment(this.value).format('dddd, MMMM Do YYYY')
+      },
+      itIsToday() {
+        return this.value == new Date().toISOString().substr(0, 10)
       }
     }
 }
