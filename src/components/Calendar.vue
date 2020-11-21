@@ -2,48 +2,51 @@
   <v-container>
     <v-row>
       <v-col>
-        <v-sheet
-          height="70vh"
-          style="position: relative;"
-        >
+        <v-sheet elevation="10">
           <CalendarNavigator
             @timeTravelPrev="$refs.calendar.prev()"
             @timeTravelNext="$refs.calendar.next()"
             v-bind:value.sync="value"
+            v-bind:type.sync="type"
           />
-          <v-calendar
-            ref="calendar"
-            type="week"
-            v-bind:events="events"
-            v-model="value"
-            v-bind:event-color="getEventColor"
-            v-on:click:event="showEvent"
-          ></v-calendar>
-          <v-menu
-              v-model="selectedOpen"
-              :close-on-content-click="false"
-              :activator="selectedElement"
-              offset-x
+          <v-sheet
+            height="70vh"
+            style="position: relative;"
           >
-            <CalendarEventShow
-              v-bind.sync="selectedEvent"
-              v-bind:selectedOpen.sync="selectedOpen"
-            />
-          </v-menu>
-          <v-btn
-            id="addTaskButton"
-            @click="showModal = true"
-            fab
-            absolute
-            bottom
-            right
-            color="teal"
-            dark
-            elevation="5"
-            large
-          >
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
+            <v-calendar
+              ref="calendar"
+              v-bind:type="type"
+              v-bind:events="events"
+              v-model="value"
+              v-bind:event-color="getEventColor"
+              v-on:click:event="showEvent"
+            ></v-calendar>
+            <v-menu
+                v-model="selectedOpen"
+                :close-on-content-click="false"
+                :activator="selectedElement"
+                offset-x
+            >
+              <CalendarEventShow
+                v-bind.sync="selectedEvent"
+                v-bind:selectedOpen.sync="selectedOpen"
+              />
+            </v-menu>
+            <v-btn
+              id="addTaskButton"
+              @click="showModal = true"
+              fab
+              absolute
+              bottom
+              right
+              color="teal"
+              dark
+              elevation="5"
+              large
+            >
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </v-sheet>
         </v-sheet>
       </v-col>
     </v-row>
@@ -72,7 +75,8 @@ export default {
       showModal: false,
       selectedEvent: {},
       selectedElement: null,
-      selectedOpen: false
+      selectedOpen: false,
+      type: 'week'
     }
   },
   methods: {
