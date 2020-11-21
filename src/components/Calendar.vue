@@ -10,10 +10,11 @@
             @timeTravelPrev="$refs.calendar.prev()"
             @timeTravelNext="$refs.calendar.next()"
             v-bind:value.sync="value"
+            v-bind:type.sync="type"
           />
           <v-calendar
             ref="calendar"
-            type="week"
+            v-bind:type="type"
             v-bind:events="events"
             v-model="value"
             v-bind:event-color="getEventColor"
@@ -73,7 +74,8 @@ export default {
       showModal: false,
       selectedEvent: {},
       selectedElement: null,
-      selectedOpen: false
+      selectedOpen: false,
+      type: 'week'
     }
   },
   methods: {
