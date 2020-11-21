@@ -5,8 +5,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    events: []
   },
   mutations: {
+    addEvent(state, event) {
+      state.events.push(event)
+    }
   },
   actions: {
   },
