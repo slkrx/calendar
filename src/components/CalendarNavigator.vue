@@ -1,6 +1,7 @@
 <template>
     <v-toolbar
       flat
+      color="grey lighten-5"
     >
       <template v-if="itIsToday">
         <v-btn
