@@ -1,17 +1,16 @@
 <template>
   <v-container>
-    <CalendarNavigator
-      @timeTravelPrev="$refs.calendar.prev()"
-      @timeTravelNext="$refs.calendar.next()"
-      v-bind:value.sync="value"
-    />
     <v-row>
       <v-col>
         <v-sheet
           height="70vh"
-          elevation="3"
           style="position: relative;"
         >
+          <CalendarNavigator
+            @timeTravelPrev="$refs.calendar.prev()"
+            @timeTravelNext="$refs.calendar.next()"
+            v-bind:value.sync="value"
+          />
           <v-calendar
             ref="calendar"
             type="week"
@@ -38,7 +37,7 @@
             absolute
             bottom
             right
-            color="green"
+            color="teal"
             dark
             elevation="5"
             large
