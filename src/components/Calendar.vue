@@ -93,13 +93,13 @@ export default {
       startDate.setMinutes(startMinute);
       endDate.setHours(endHour);
       endDate.setMinutes(endMinute);
-      this.store.commit('addEvent', {name: name,
-                                      start: startDate,
-                                      end: endDate,
-                                      color: color,
-                                      timed: true,
-                                      description: ''
-      });
+      this.createEvent({name: name,
+                        start: startDate,
+                        end: endDate,
+                        color: color,
+                        timed: true,
+                        description: ''
+                      });
     },
     showEvent({ nativeEvent, event }) {
       const open = () => {
@@ -120,7 +120,7 @@ export default {
       nativeEvent.stopPropagation()
     },
     ...mapMutations([
-      'addEvent'
+      'createEvent'
     ])
   },
   computed: {
