@@ -8,7 +8,7 @@ export default new Vuex.Store({
     events: []
   },
   mutations: {
-    addEvent(state, event) {
+    createEvent(state, event) {
       state.events.push(event)
     }
   },
