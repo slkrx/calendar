@@ -62,7 +62,7 @@
 import CalendarNavigator from './CalendarNavigator'
 import NewTaskWindow from './NewTaskWindow.vue'
 import CalendarEventShow from './CalendarEventShow'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   components: {
@@ -93,7 +93,7 @@ export default {
       startDate.setMinutes(startMinute);
       endDate.setHours(endHour);
       endDate.setMinutes(endMinute);
-      this.$store.commit('addEvent', {name: name,
+      this.store.commit('addEvent', {name: name,
                                       start: startDate,
                                       end: endDate,
                                       color: color,
@@ -118,7 +118,10 @@ export default {
       }
 
       nativeEvent.stopPropagation()
-    }
+    },
+    ...mapMutations([
+      'addEvent'
+    ])
   },
   computed: {
     ...mapState([
