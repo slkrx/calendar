@@ -62,6 +62,7 @@
 import CalendarNavigator from './CalendarNavigator'
 import NewTaskWindow from './NewTaskWindow.vue'
 import CalendarEventShow from './CalendarEventShow'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -120,9 +121,9 @@ export default {
     }
   },
   computed: {
-    events() {
-      return this.$store.state.events
-    }
+    ...mapState([
+      'events'
+    ])
   },
   mounted: function() {
     this.$refs.calendar.scrollToTime('06:00')
