@@ -72,7 +72,6 @@ export default {
   data: function() {
     return {
       value: new Date().toISOString().substr(0, 10),
-      events: [],
       showModal: false,
       selectedEvent: {},
       selectedElement: null,
@@ -93,13 +92,13 @@ export default {
       startDate.setMinutes(startMinute);
       endDate.setHours(endHour);
       endDate.setMinutes(endMinute);
-      this.events.push({name: name,
-                        start: startDate,
-                        end: endDate,
-                        color: color,
-                        timed: true,
-                        description: ''
-                      });
+      this.$store.commit('addEvent', {name: name,
+                                      start: startDate,
+                                      end: endDate,
+                                      color: color,
+                                      timed: true,
+                                      description: ''
+      });
     },
     showEvent({ nativeEvent, event }) {
       const open = () => {
@@ -118,6 +117,11 @@ export default {
       }
 
       nativeEvent.stopPropagation()
+    }
+  },
+  computed: {
+    events() {
+      return this.$store.state.events
     }
   },
   mounted: function() {

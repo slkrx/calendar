@@ -9,10 +9,10 @@
           class="ml-n9"
           color="grey darken-1"
       >
-        <v-tab>
+        <v-tab @click="showCalendar">
           Calendar
         </v-tab>
-        <v-tab>
+        <v-tab @click="showStatistics">
           Statistics
         </v-tab>
       </v-tabs>
@@ -23,3 +23,20 @@
       ></v-avatar>
     </v-app-bar>
 </template>
+
+<script>
+export default {
+  methods: {
+    showCalendar() {
+      if (this.$router.currentRoute.name != 'Calendar') {
+        this.$router.push({ name: 'Calendar' })
+      }
+    },
+    showStatistics() {
+      if (this.$router.currentRoute.name != 'Statistics') {
+        this.$router.push({ name: 'Statistics' })
+      }
+    }
+  }
+}
+</script>
