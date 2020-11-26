@@ -6,8 +6,6 @@
           <CalendarNavigator
             @timeTravelPrev="$refs.calendar.prev()"
             @timeTravelNext="$refs.calendar.next()"
-            v-bind:value.sync="value"
-            v-bind:type.sync="type"
           />
           <v-sheet
             height="70vh"
@@ -15,9 +13,10 @@
           >
             <v-calendar
               ref="calendar"
-              v-bind:type="type"
+              v-bind:type="calendarType"
               v-bind:events="events"
-              v-model="value"
+              v-bind:value="selectedDate"
+              @input="updateSelectedDate($event)"
               v-bind:event-color="getEventColor"
               v-on:click:event="showEvent"
             ></v-calendar>
@@ -72,13 +71,18 @@ export default {
   },
   data: function() {
     return {
-      value: new Date().toISOString().substr(0, 10),
       showModal: false,
       selectedEvent: {},
       selectedElement: null,
-      selectedOpen: false,
-      type: 'week'
+      selectedOpen: false
     }
+  },
+  computed: {
+    ...mapState([
+      'events',
+      'selectedDate',
+      'calendarType'
+    ])
   },
   methods: {
     getEventColor(event) {
@@ -120,12 +124,8 @@ export default {
       nativeEvent.stopPropagation()
     },
     ...mapMutations([
-      'createEvent'
-    ])
-  },
-  computed: {
-    ...mapState([
-      'events'
+      'createEvent',
+      'updateSelectedDate'
     ])
   },
   mounted: function() {

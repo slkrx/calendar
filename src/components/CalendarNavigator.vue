@@ -5,7 +5,7 @@
     >
       <template v-if="itIsToday">
         <v-btn
-          @click="$emit('update:value', new Date().toISOString().substr(0, 10))"
+          @click="updateSelectedDate(new Date().toISOString().substr(0, 10))"
           outlined
           color="primary"
         >
@@ -14,10 +14,9 @@
       </template>
       <template v-else>
         <v-btn
-          @click="$emit('update:value', new Date().toISOString().substr(0, 10))"
+          @click="updateSelectedDate(new Date().toISOString().substr(0, 10))"
           color="primary"
           dark
-          flat
           depressed
         >
           Today
@@ -55,8 +54,8 @@
             ></v-text-field>
         </template>
         <v-date-picker
-            v-bind:value="value"
-            @input="$emit('update:value', $event); isMenuOpen = false"
+            v-bind:value="selectedDate"
+            @input="updateSelectedDate($event); isMenuOpen = false"
         />
       </v-menu>
       <v-spacer></v-spacer>
@@ -71,20 +70,20 @@
             v-bind="attrs"
             v-on="on"
           >
-            <span>{{ type }}</span>
+            <span>{{ calendarType }}</span>
             <v-icon right>
               mdi-menu-down
             </v-icon>
           </v-btn>
         </template>
           <v-list>
-            <v-list-item @click="$emit('update:type', 'day')">
+            <v-list-item @click="updateCalendarType('day')">
               <v-list-item-title>Day</v-list-item-title>
             </v-list-item>
-            <v-list-item @click="$emit('update:type', 'week')">
+            <v-list-item @click="updateCalendarType('week')">
               <v-list-item-title>Week</v-list-item-title>
             </v-list-item>
-            <v-list-item @click="$emit('update:type', 'month')">
+            <v-list-item @click="updateCalendarType('month')">
               <v-list-item-title>Month</v-list-item-title>
             </v-list-item>
           </v-list>
@@ -93,11 +92,9 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
+
 export default {
-    props: {
-        value: String,
-        type: String
-    },
     data: function() {
         return {
             isMenuOpen: false
@@ -105,11 +102,21 @@ export default {
     },
     computed: {
       formattedDate() {
-        return this.$moment(this.value).format('dddd, MMMM Do YYYY')
+        return this.$moment(this.selectedDate).format('dddd, MMMM Do YYYY')
       },
       itIsToday() {
-        return this.value == new Date().toISOString().substr(0, 10)
-      }
+        return this.selectedDate == new Date().toISOString().substr(0, 10)
+      },
+      ...mapState([
+        'selectedDate',
+        'calendarType'
+      ])
+    },
+    methods: {
+      ...mapMutations([
+        'updateSelectedDate',
+        'updateCalendarType'
+      ])
     }
 }
 </script>
