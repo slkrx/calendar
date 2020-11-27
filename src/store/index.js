@@ -11,6 +11,7 @@ export default new Vuex.Store({
   },
   mutations: {
     createEvent(state, event) {
+      event.id = state.events.length
       state.events.push(event)
     },
     updateSelectedDate(state, newDate) {
@@ -18,10 +19,11 @@ export default new Vuex.Store({
     },
     updateCalendarType(state, newType) {
       state.calendarType = newType
+    },
+    updateEvent(state, event) {
+      for (const key in event) {
+        state.events[event.id][key] = event[key]
+      }
     }
-  },
-  actions: {
-  },
-  modules: {
   }
 })
