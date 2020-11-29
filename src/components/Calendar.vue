@@ -19,7 +19,35 @@
               @input="updateSelectedDate($event)"
               v-bind:event-color="getEventColor"
               v-on:click:event="showEvent"
-            ></v-calendar>
+              @mousedown:event="startDrag"
+              @mousedown:time="startTime"
+              @mousemove:time="mouseMove"
+              @mouseup:time="endDrag"
+              @mouseleave.native="endDrag"
+              >
+              <template v-slot:event="{ event, timed, eventSummary }">
+                <div
+                  v-html="eventSummary()"
+                  style="margin-left: 4px;"
+                ></div>
+                <div
+                  v-if="timed"
+                  style="position: absolute;
+                         display: block;
+                         cursor: ns-resize;
+                         bottom: 4px;
+                         height: 6px;
+                         left: 50%;
+                         border-top: 1px solid white;
+                         border-bottom: 1px solid white;
+                         width: 16px;
+                         margin-left: -8px;
+                         opacity: 0.8;
+                         content: '';"
+                  @mousedown.stop="extendBottom(event)"
+                ></div>
+              </template>
+            </v-calendar>
             <v-menu
                 v-model="selectedOpen"
                 :close-on-content-click="false"
@@ -74,7 +102,11 @@ export default {
       showModal: false,
       selectedEvent: {},
       selectedElement: null,
-      selectedOpen: false
+      selectedOpen: false,
+      dragEvent: null,
+      dragStart: null,
+      extendedEvent: null,
+      extendedStart: null
     }
   },
   computed: {
@@ -123,9 +155,66 @@ export default {
 
       nativeEvent.stopPropagation()
     },
+    startDrag ({ event, timed }) {
+        if (event && timed) {
+          this.dragEvent = event
+          this.dragTime = null
+        }
+    },
+    startTime (tms) {
+      const mouse = this.toTime(tms)
+
+      if (this.dragEvent && this.dragTime === null) {
+        const start = this.dragEvent.start
+        this.dragTime = mouse - start
+      }
+    },
+    extendBottom (event) {
+      this.extendedStart = event.start
+      this.extendedEvent = event
+    },
+    mouseMove (tms) {
+      const mouse = this.toTime(tms)
+      if (this.dragEvent && this.dragTime !== null) {
+        const start = this.dragEvent.start
+        const end = this.dragEvent.end
+        const duration = end - start
+        const newStartTime = mouse - this.dragTime
+        const newStart = this.roundTime(newStartTime)
+        const newEnd = newStart + duration
+
+        this.dragEvent.start = newStart
+        this.dragEvent.end = newEnd
+      }
+      else if (this.extendedEvent) {
+        const mouseRounded = this.roundTime(mouse, false)
+        const min = Math.min(mouseRounded, this.extendedStart)
+        const max = Math.max(mouseRounded, this.extendedStart)
+        this.extendedEvent.start = min
+        this.extendedEvent.end = max
+      }
+    },
+    endDrag () {
+      this.dragTime = null
+      this.dragEvent = null
+      this.extendedEvent = null
+      this.saveData()
+    },
+    roundTime (time, down = true) {
+      const roundTo = 15 // minutes
+      const roundDownTime = roundTo * 60 * 1000
+
+      return down
+        ? time - time % roundDownTime
+        : time + (roundDownTime - (time % roundDownTime))
+    },
+    toTime (tms) {
+      return new Date(tms.year, tms.month - 1, tms.day, tms.hour, tms.minute).getTime()
+    },
     ...mapMutations([
       'createEvent',
-      'updateSelectedDate'
+      'updateSelectedDate',
+      'saveData'
     ])
   },
   mounted: function() {
