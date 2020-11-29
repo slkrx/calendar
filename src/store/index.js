@@ -20,8 +20,8 @@ export default new Vuex.Store({
     updateCalendarType(state, newType) {
       state.calendarType = newType;
     },
-    saveData() {
-
+    saveData(state) {
+      localStorage.setItem('events', JSON.stringify(state.events));
     },
     initialiseStore(state) {
       // Fetches data stored in the browser when the app is started
