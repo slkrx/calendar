@@ -55,7 +55,7 @@
                 offset-x
             >
               <CalendarEventShow
-                v-bind.sync="selectedEvent"
+                v-bind="selectedEvent"
                 v-bind:selectedOpen.sync="selectedOpen"
               />
             </v-menu>
@@ -118,7 +118,15 @@ export default {
   },
   methods: {
     getEventColor(event) {
-      return event.color
+      if (event.completed) {
+        const rgb = parseInt(event.color.substring(1), 16)
+        const r = (rgb >> 16) & 0xFF
+        const g = (rgb >> 8) & 0xFF
+        const b = (rgb >> 0) & 0xFF
+        return `rgba(${r}, ${g}, ${b}, 0.5)`
+      } else {
+        return event.color
+      }
     },
     addEvent(name, date, startTime, endTime, color) {
       let startDate = new Date(date + 'T00:00:00');
@@ -134,7 +142,8 @@ export default {
                         end: endDate,
                         color: color,
                         timed: true,
-                        description: ''
+                        description: '',
+                        completed: false
                       });
     },
     showEvent({ nativeEvent, event }) {

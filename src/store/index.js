@@ -11,14 +11,20 @@ export default new Vuex.Store({
   },
   mutations: {
     createEvent(state, event) {
-      state.events.push(event);
+      event.id = state.events.length
+      state.events.push(event)
       localStorage.setItem('events', JSON.stringify(state.events));
     },
     updateSelectedDate(state, newDate) {
       state.selectedDate = newDate;
     },
     updateCalendarType(state, newType) {
-      state.calendarType = newType;
+      state.calendarType = newType
+    },
+    updateEvent(state, event) {
+      for (const key in event) {
+        state.events[event.id][key] = event[key]
+      }
     },
     saveData(state) {
       localStorage.setItem('events', JSON.stringify(state.events));
@@ -44,9 +50,5 @@ export default new Vuex.Store({
         }
       }
     }
-  },
-  actions: {
-  },
-  modules: {
   }
 })
