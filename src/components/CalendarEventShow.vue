@@ -4,10 +4,7 @@
         min-width="350px"
         flat
     >
-        <v-toolbar
-            :color="color"
-            dark
-        >
+        <v-toolbar :color="color" dark>
             <v-toolbar-title v-html="name"></v-toolbar-title>
         </v-toolbar>
         <v-card-text>
@@ -18,14 +15,10 @@
             ></v-checkbox>
         </v-card-text>
         <v-card-actions>
-            <v-btn
-                @click="save"
-            >
+            <v-btn @click="save">
                 Save
             </v-btn>
-            <v-btn
-                @click="close"
-            >
+            <v-btn @click="close">
                 Cancel
             </v-btn>
         </v-card-actions>
