@@ -13,9 +13,10 @@ export default new Vuex.Store({
     createEvent(state, event) {
       event.id = state.events.length
       state.events.push(event)
+      localStorage.setItem('events', JSON.stringify(state.events));
     },
     updateSelectedDate(state, newDate) {
-      state.selectedDate = newDate
+      state.selectedDate = newDate;
     },
     updateCalendarType(state, newType) {
       state.calendarType = newType
@@ -23,6 +24,30 @@ export default new Vuex.Store({
     updateEvent(state, event) {
       for (const key in event) {
         state.events[event.id][key] = event[key]
+      }
+    },
+    saveData(state) {
+      localStorage.setItem('events', JSON.stringify(state.events));
+    },
+    initialiseStore(state) {
+      // Fetches data stored in the browser when the app is started
+      if (localStorage.getItem('events')) {
+        try {
+          // A really ugly regular expression for modifying the json parser to allow for Date types
+          let reISO = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/;
+          JSON.dateParser = function (key, value) {
+            if (typeof value === 'string') {
+              let arr = reISO.exec(value);
+              if (arr)
+                return new Date(value);
+            }
+            return value;
+          };
+          state.events = JSON.parse(localStorage.getItem('events'), JSON.dateParser);
+        } catch(e) {
+          localStorage.removeItem('events');
+          console.error("Events data failed parsing");
+        }
       }
     }
   }
