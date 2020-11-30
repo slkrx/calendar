@@ -18,7 +18,6 @@
               v-bind:value="selectedDate"
               @input="updateSelectedDate($event)"
               v-bind:event-color="getEventColor"
-              v-on:click:event="showEvent"
               @mousedown:event="startDrag"
               @mousedown:time="startTime"
               @mousemove:time="mouseMove"
@@ -46,6 +45,13 @@
                          content: '';"
                   @mousedown.stop="extendBottom(event)"
                 ></div>
+                <v-btn
+                  @click="showEvent({ nativeEvent: $event, event: event })"
+                  rounded
+                  small
+                >
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
               </template>
             </v-calendar>
             <v-menu
