@@ -8,9 +8,9 @@
             <v-toolbar-title v-html="name"></v-toolbar-title>
         </v-toolbar>
         <v-card-text>
-            <v-textarea v-model="description"></v-textarea>
+            <v-textarea v-model="descriptionNew"></v-textarea>
             <v-checkbox
-                v-model="completed"
+                v-model="completedNew"
                 label="Completed"
             ></v-checkbox>
         </v-card-text>
@@ -37,6 +37,12 @@ export default {
         completed: Boolean,
         id: Number
     },
+    data: function() {
+        return {
+            descriptionNew: this.description,
+            completedNew: this.completed
+        }
+    },
     methods: {
         ...mapMutations([ 'updateEvent' ]),
         close() {
@@ -45,10 +51,16 @@ export default {
         save() {
             this.updateEvent({
                 id: this.id,
-                description: this.description,
-                completed: this.completed
+                description: this.descriptionNew,
+                completed: this.completedNew
             })
             this.close()
+        }
+    },
+    watch: {
+        id: function () {
+            this.descriptionNew = this.description
+            this.completedNew = this.completed
         }
     }
 }

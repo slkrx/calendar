@@ -11,7 +11,6 @@ export default new Vuex.Store({
   },
   mutations: {
     createEvent(state, event) {
-      event.id = state.events.length
       state.events.push(event)
       localStorage.setItem('events', JSON.stringify(state.events));
     },

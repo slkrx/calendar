@@ -149,7 +149,8 @@ export default {
                         color: color,
                         timed: true,
                         description: '',
-                        completed: false
+                        completed: false,
+                        id: this.events.length
                       });
     },
     showEvent({ nativeEvent, event }) {
