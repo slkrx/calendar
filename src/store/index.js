@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+import moment from 'moment'
+
 export default new Vuex.Store({
   state: {
     events: [],
@@ -48,6 +50,16 @@ export default new Vuex.Store({
           console.error("Events data failed parsing");
         }
       }
+    }
+  },
+  getters: {
+    todaysTasks(state) {
+      return state.events.filter(event => {
+        return moment(event.start).isSame(moment(), 'day')
+      }).sort((a, b) => a.start - b.start)
+    },
+    getEvent: (state) => (id) => {
+      return state.events[id]
     }
   }
 })
