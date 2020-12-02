@@ -196,16 +196,14 @@ export default {
         const end = this.dragEvent.end
         const duration = end - start
         const newStartTime = mouse - this.dragTime
-        const newStart = this.roundTime(newStartTime)
-        const newEnd = newStart + duration
+        const newEnd = newStartTime + duration
 
-        this.dragEvent.start = newStart
+        this.dragEvent.start = newStartTime
         this.dragEvent.end = newEnd
       }
       else if (this.extendedEvent) {
-        const mouseRounded = this.roundTime(mouse, false)
-        const min = Math.min(mouseRounded, this.extendedStart)
-        const max = Math.max(mouseRounded, this.extendedStart)
+        const min = Math.min(mouse, this.extendedStart)
+        const max = Math.max(mouse, this.extendedStart)
         this.extendedEvent.start = min
         this.extendedEvent.end = max
       }
@@ -215,14 +213,6 @@ export default {
       this.dragEvent = null
       this.extendedEvent = null
       this.saveData()
-    },
-    roundTime (time, down = true) {
-      const roundTo = 15 // minutes
-      const roundDownTime = roundTo * 60 * 1000
-
-      return down
-        ? time - time % roundDownTime
-        : time + (roundDownTime - (time % roundDownTime))
     },
     toTime (tms) {
       return new Date(tms.year, tms.month - 1, tms.day, tms.hour, tms.minute).getTime()
