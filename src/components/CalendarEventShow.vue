@@ -99,7 +99,7 @@ export default {
         }
     },
     watch: {
-        id: function () {
+        selectedOpen: function () {
             this.descriptionNew = this.description
             this.completedNew = this.completed
             this.colorNew = this.color
