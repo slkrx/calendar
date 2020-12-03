@@ -21,6 +21,9 @@
             <v-btn @click="close">
                 Cancel
             </v-btn>
+            <v-btn @click="deleteevent">
+                Delete
+            </v-btn>
         </v-card-actions>
     </v-card>
 </template>
@@ -44,7 +47,10 @@ export default {
         }
     },
     methods: {
-        ...mapMutations([ 'updateEvent' ]),
+        ...mapMutations([ 
+            'updateEvent',
+            'deleteEvent' 
+        ]),
         close() {
             this.$emit('update:selectedOpen', false)
         },
@@ -55,7 +61,12 @@ export default {
                 completed: this.completedNew
             })
             this.close()
+        },
+        deleteevent() {
+            this.deleteEvent()
+            this.close()
         }
+
     },
     watch: {
         id: function () {

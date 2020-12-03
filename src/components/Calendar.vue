@@ -65,7 +65,7 @@
                 v-bind:selectedOpen.sync="selectedOpen"
               />
             </v-menu>
-            <v-btn
+            <v-btn v-if="!showModal"
               id="addTaskButton"
               @click="showModal = true"
               fab
@@ -78,6 +78,20 @@
               large
             >
               <v-icon>mdi-plus</v-icon>
+            </v-btn>
+            <v-btn v-if="showModal"
+              id="addTaskButton"
+              @click="showModal = false"
+              fab
+              absolute
+              bottom
+              right
+              color="red"
+              dark
+              elevation="5"
+              large
+            >
+              <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-sheet>
         </v-sheet>
@@ -134,9 +148,9 @@ export default {
         return event.color
       }
     },
-    addEvent(name, date, startTime, endTime, color) {
-      let startDate = new Date(date + 'T00:00:00');
-      let endDate =  new Date(date + 'T00:00:00');
+    addEvent(name, startdate, enddate, startTime, endTime, color) {
+      let startDate = new Date(startdate + 'T00:00:00');
+      let endDate =  new Date(enddate + 'T00:00:00');
       let [startHour, startMinute] = startTime.split(':');
       let [endHour, endMinute] = endTime.split(':');
       startDate.setHours(startHour);

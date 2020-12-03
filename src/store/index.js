@@ -25,6 +25,12 @@ export default new Vuex.Store({
         state.events[event.id][key] = event[key]
       }
     },
+    deleteAll() {
+      localStorage.clear() // this doesn't work and idk why
+    },
+    deleteEvent() {
+      localStorage.removeItem('events') // idk how to delete one event, also this doesn't work either:(
+    },
     saveData(state) {
       localStorage.setItem('events', JSON.stringify(state.events));
     },
