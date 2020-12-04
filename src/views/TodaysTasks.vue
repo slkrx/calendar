@@ -28,16 +28,16 @@
                             </h2>
                         </v-col>
                     </v-row>
-                            <v-progress-linear
-                                :value="progress"
-                                height="25"
-                                :color="progressColor"
-                            >
-                                <strong>{{ Math.ceil(progress) }}%</strong>
-                            </v-progress-linear>
+                    <v-progress-linear
+                        :value="progress"
+                        height="25"
+                        :color="progressColor"
+                    >
+                        <strong>{{ Math.ceil(progress) }}%</strong>
+                    </v-progress-linear>
                 </v-sheet>
             </v-col>
-            <v-col>
+            <v-col v-if="todaysTasks.length > 0">
                 <v-sheet rounded class="px-10" elevation="10">
                     <v-timeline>
                         <v-timeline-item
@@ -80,7 +80,10 @@ export default {
             return this.todaysTasks.filter((task) => task.completed)
         },
         progress() {
-            return this.completedTasks.length / this.todaysTasks.length * 100
+            if (this.todaysTasks.length > 0)
+                return this.completedTasks.length / this.todaysTasks.length * 100
+            else
+                return 100
         },
         progressColor() {
             if (this.progress <= 25)
