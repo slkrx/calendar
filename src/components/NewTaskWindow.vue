@@ -59,6 +59,7 @@
                 justify="center"
                 hide-canvas
                 show-swatches
+                :swatches="swatches"
                 swatches-max-height="118"
                 v-model="color"
               />
@@ -94,8 +95,13 @@
         startDate: new Date().toISOString().substr(0, 10),
         endDate: new Date().toISOString().substr(0, 10),
         start: "00:00",
-        end: "11:59",
-        color: "#FF00FF"
+        end: "11:00",
+        color: "#FF00FF",
+        swatches: [
+          ['#FF0000', '#FF00FF', '#640000'],
+          ['#00FF00', '#FF6400', '#006400'],
+          ['#0000FF', '#00FFFF', '#000064'],
+        ],
       }
     },
     methods: {

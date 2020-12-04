@@ -5,7 +5,11 @@
         flat
     >
         <v-toolbar :color="color" dark>
-            <v-toolbar-title v-html="name"></v-toolbar-title>
+            <v-text-field
+                v-model="nameNew"
+                full-width
+                hide-details
+            ></v-text-field>
         </v-toolbar>
         <v-card-text>
             <v-textarea v-model="descriptionNew"></v-textarea>
@@ -13,6 +17,38 @@
                 v-model="completedNew"
                 label="Completed"
             ></v-checkbox>
+            <v-menu
+                v-model="colorPickerOpen"
+                :close-on-content-click="false"
+                offset-x
+            >
+                <template v-slot:activator="{ on }">
+                    <v-chip
+                        v-on="on"
+                        :color="colorNew"
+                        dark
+                    >
+                        Color
+                    </v-chip>
+                </template>
+                <v-card>
+                    <v-card-text>
+                        <v-color-picker
+                            v-model="colorNew"
+                            :hide-inputs="true"
+                        ></v-color-picker>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            @click="colorPickerOpen = false"
+                            icon
+                        >
+                            <v-icon>mdi-check</v-icon>
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-menu>
         </v-card-text>
         <v-card-actions>
             <v-btn @click="save">
@@ -43,7 +79,10 @@ export default {
     data: function() {
         return {
             descriptionNew: this.description,
-            completedNew: this.completed
+            completedNew: this.completed,
+            colorNew: this.color,
+            colorPickerOpen: false,
+            nameNew: this.name
         }
     },
     methods: {
@@ -58,7 +97,9 @@ export default {
             this.updateEvent({
                 id: this.id,
                 description: this.descriptionNew,
-                completed: this.completedNew
+                completed: this.completedNew,
+                color: this.colorNew,
+                name: this.nameNew
             })
             this.close()
         },
@@ -69,9 +110,11 @@ export default {
 
     },
     watch: {
-        id: function () {
+        selectedOpen: function () {
             this.descriptionNew = this.description
             this.completedNew = this.completed
+            this.colorNew = this.color
+            this.nameNew = this.name
         }
     }
 }
