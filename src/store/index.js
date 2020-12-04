@@ -26,11 +26,16 @@ export default new Vuex.Store({
       }
     },
     deleteAll(state) {
-      localStorage.removeItem('events') // this doesn't work and idk why
-      state.events=null
+      localStorage.removeItem('events')
+      state.events=[]
     },
-    deleteEvent() {
-      localStorage.removeItem('events') // idk how to delete one event, also this doesn't work either:(
+    deleteEvent(state, eventid) {
+      localStorage.removeItem('events')
+      state.events.splice(eventid, 1);
+      for( var i = eventid; i < state.events.length; i++){
+            state.events[i].id=i;
+      }
+      localStorage.setItem('events', JSON.stringify(state.events));
     },
     saveData(state) {
       localStorage.setItem('events', JSON.stringify(state.events));

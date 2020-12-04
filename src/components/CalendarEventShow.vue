@@ -63,7 +63,7 @@ export default {
             this.close()
         },
         deleteevent() {
-            this.deleteEvent()
+            this.deleteEvent(this.id)
             this.close()
         }
 
