@@ -13,9 +13,21 @@
               label="Task Name"
               v-model="name"
             />
-            <h2>Date:</h2>
             <v-row justify="center">
-              <v-date-picker v-model="date"></v-date-picker>
+              <v-col>
+              <h2>Start Date:</h2>
+              <v-date-picker 
+                v-model="startDate"
+                :max="endDate"
+              />
+              </v-col>
+              <v-col>
+              <h2>End Date:</h2>
+              <v-date-picker 
+                v-model="endDate"
+                :min="startDate"
+              />
+              </v-col>
             </v-row>
             <v-row>
               <v-col>
@@ -41,13 +53,17 @@
                 />
               </v-col>
             </v-row>
-            <v-color-picker
-              hide-canvas
-              show-swatches
-              :swatches="swatches"
-              swatches-max-height="118"
-              v-model="color"
-            />
+            <h2>Display Color:</h2>
+            <v-row justify="center">
+              <v-color-picker
+                justify="center"
+                hide-canvas
+                show-swatches
+                :swatches="swatches"
+                swatches-max-height="118"
+                v-model="color"
+              />
+            </v-row>
           </slot>
         </section>
         <footer class="modal-footer">
@@ -60,7 +76,7 @@
             </v-btn>
             <v-btn
               class="btn-add"
-              @click="$emit('addEvent', name, date, start, end, color); close()"
+              @click="$emit('addEvent', name, startDate, endDate, start, end, color); close()"
             >
               Add Task
             </v-btn>
@@ -76,7 +92,8 @@
     data: function() {
       return {
         name: "New Task",
-        date: new Date().toISOString().substr(0, 10),
+        startDate: new Date().toISOString().substr(0, 10),
+        endDate: new Date().toISOString().substr(0, 10),
         start: "00:00",
         end: "11:00",
         color: "#FF00FF",
@@ -116,6 +133,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 2;
   }
 
   .modal {

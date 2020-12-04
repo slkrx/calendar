@@ -27,6 +27,18 @@ export default new Vuex.Store({
         state.events[event.id][key] = event[key]
       }
     },
+    deleteAll(state) {
+      localStorage.removeItem('events')
+      state.events=[]
+    },
+    deleteEvent(state, eventid) {
+      localStorage.removeItem('events')
+      state.events.splice(eventid, 1);
+      for( var i = eventid; i < state.events.length; i++){
+            state.events[i].id=i;
+      }
+      localStorage.setItem('events', JSON.stringify(state.events));
+    },
     saveData(state) {
       localStorage.setItem('events', JSON.stringify(state.events));
     },
