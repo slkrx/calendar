@@ -127,6 +127,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 2;
   }
 
   .modal {
@@ -134,7 +135,6 @@
     box-shadow: 2px 2px 20px 1px;
     height: 70vh; 
     overflow-y: auto;
-    z-index: 2;
   }
 
   .modal-header {
