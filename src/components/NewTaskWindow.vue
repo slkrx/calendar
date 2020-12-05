@@ -16,69 +16,88 @@
             <v-row justify="center">
               <v-col>
               <h2>Start Date:</h2>
-              <v-date-picker 
-                v-model="startDate"
-                :max="endDate"
-              />
+              <BaseDatePicker :displayDate="startDate | moment('ddd, MMM Do YY')">
+                <v-date-picker v-slot="{ open }"
+                  v-model="startDate"
+                  :max="endDate"
+                  @change="open = false"
+                />
+              </BaseDatePicker>
               </v-col>
               <v-col>
               <h2>End Date:</h2>
-              <v-date-picker 
-                v-model="endDate"
-                :min="startDate"
-              />
+              <BaseDatePicker :displayDate="endDate | moment('ddd, MMM Do YY')">
+                <v-date-picker v-slot="{ open }" 
+                  v-model="endDate"
+                  :min="startDate"
+                  @change="open = false"
+                />
+              </BaseDatePicker>
               </v-col>
             </v-row>
             <v-row>
               <v-col>
                 <h2>Start Time:</h2>
-                <v-time-picker
-                  class="time-picker"
-                  ampm-in-title
-                  format="ampm"
-                  scrollable
-                  v-model="start"
-                  :max="end"
-                />
+                <BaseTimePicker :displayTime="start">
+                  <v-time-picker v-slot="{ open }"
+                    class="time-picker"
+                    ampm-in-title
+                    format="ampm"
+                    scrollable
+                    v-model="start"
+                    :max="end"
+                    @change="open = false"
+                  />
+                </BaseTimePicker>
               </v-col>
               <v-col>
                 <h2>End Time:</h2>
-                <v-time-picker
-                  class="time-picker"
-                  ampm-in-title
-                  format="ampm"
-                  scrollable
-                  v-model="end"
-                  :min="start"
-                />
+                <BaseTimePicker :displayTime="end">
+                  <v-time-picker v-slot="{ open }"
+                    class="time-picker"
+                    ampm-in-title
+                    format="ampm"
+                    scrollable
+                    v-model="end"
+                    :min="start"
+                    @change="open = false"
+                  />
+                </BaseTimePicker>
               </v-col>
             </v-row>
-            <h2>Display Color:</h2>
-            <v-row justify="center">
-              <v-color-picker
-                justify="center"
-                hide-canvas
-                show-swatches
-                :swatches="swatches"
-                swatches-max-height="118"
-                v-model="color"
-              />
+            <v-row>
+              <v-col class="d-flex">
+                <h2>Display Color:</h2>
+                <BaseColorPicker :displayColor="color">
+                  <v-color-picker v-slot="{ open }"
+                    justify="center"
+                    hide-canvas
+                    show-swatches
+                    :swatches="swatches"
+                    swatches-max-height="118"
+                    v-model="color"
+                    @change="open = false"
+                  />
+                </BaseColorPicker>
+              </v-col>
             </v-row>
           </slot>
         </section>
         <footer class="modal-footer">
           <slot name="footer">
             <v-btn
-              class="btn-cancel"
-              @click="close"
-            >
-              Cancel
-            </v-btn>
-            <v-btn
               class="btn-add"
               @click="$emit('addEvent', name, startDate, endDate, start, end, color); close()"
+              color="success"
             >
               Add Task
+            </v-btn>
+            <v-btn
+              class="btn-cancel"
+              @click="close"
+              color="error"
+            >
+              Cancel
             </v-btn>
           </slot>
         </footer>
@@ -88,14 +107,23 @@
 </template>
 
 <script>
+  import BaseDatePicker from './BaseDatePicker'
+  import BaseTimePicker from './BaseTimePicker'
+  import BaseColorPicker from './BaseColorPicker'
+
   export default {
+    components: {
+      BaseDatePicker,
+      BaseTimePicker,
+      BaseColorPicker
+    },
     data: function() {
       return {
         name: "New Task",
-        startDate: new Date().toISOString().substr(0, 10),
-        endDate: new Date().toISOString().substr(0, 10),
-        start: "00:00",
-        end: "11:00",
+        startDate: this.$moment().format('YYYY-MM-DD'),
+        endDate: this.$moment().format('YYYY-MM-DD'),
+        start: this.$moment().format('hh:mm'),
+        end: this.$moment().format('hh:mm'),
         color: "#FF00FF",
         swatches: [
           ['#FF0000', '#FF00FF', '#640000'],
@@ -139,7 +167,6 @@
   .modal {
     background: #FFFFFF;
     box-shadow: 2px 2px 20px 1px;
-    height: 70vh; 
     overflow-y: auto;
   }
 
@@ -156,10 +183,6 @@
   .modal-body {
     position: relative;
     padding: 20px 10px;
-  }
-
-  .time-picker {
-    transform: scale(0.875);
   }
 
   .btn-cancel,

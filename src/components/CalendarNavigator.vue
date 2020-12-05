@@ -5,7 +5,7 @@
     >
       <template v-if="itIsToday">
         <v-btn
-          @click="updateSelectedDate(new Date().toISOString().substr(0, 10))"
+          @click="updateSelectedDate(moment().format('YYYY-MM-DD'))"
           outlined
           color="primary"
         >
@@ -14,7 +14,7 @@
       </template>
       <template v-else>
         <v-btn
-          @click="updateSelectedDate(new Date().toISOString().substr(0, 10))"
+          @click="updateSelectedDate(moment().format('YYYY-MM-DD'))"
           color="primary"
           dark
           depressed
@@ -36,28 +36,15 @@
       >
         <v-icon>mdi-chevron-right</v-icon>
       </v-btn>
-      <v-menu
-        v-model="isMenuOpen"
-        transition="scale-transition"
-        offset-y
-        :close-on-content-click="false"
-      >
-        <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-bind:value="formattedDate"
-              readonly
-              prepend-icon="mdi-calendar"
-              v-bind="attrs"
-              v-on="on"
-              hide-details
-              single-line
-            ></v-text-field>
+      <BaseDatePicker :displayDate="formattedDate">
+        <template v-slot="{ open }">
+          <v-date-picker
+              v-bind:value="selectedDate"
+              @input="updateSelectedDate($event); open = false"
+              min-width="290px"
+          />
         </template>
-        <v-date-picker
-            v-bind:value="selectedDate"
-            @input="updateSelectedDate($event); isMenuOpen = false"
-        />
-      </v-menu>
+      </BaseDatePicker>
       <v-spacer></v-spacer>
       <v-menu
         bottom
@@ -93,8 +80,10 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
+import BaseDatePicker from './BaseDatePicker'
 
 export default {
+    components: { BaseDatePicker },
     data: function() {
         return {
             isMenuOpen: false
@@ -105,7 +94,7 @@ export default {
         return this.$moment(this.selectedDate).format('dddd, MMMM Do YYYY')
       },
       itIsToday() {
-        return this.selectedDate == new Date().toISOString().substr(0, 10)
+        return this.$moment().isSame(this.selectedDate, 'day')
       },
       ...mapState([
         'selectedDate',
