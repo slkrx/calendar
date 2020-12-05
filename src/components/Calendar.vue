@@ -65,34 +65,38 @@
                 v-bind:selectedOpen.sync="selectedOpen"
               />
             </v-menu>
-            <v-btn v-if="!showModal"
-              id="addTaskButton"
-              @click="showModal = true"
-              fab
-              absolute
-              bottom
-              right
-              color="teal"
-              dark
-              elevation="5"
-              large
-            >
-              <v-icon>mdi-plus</v-icon>
-            </v-btn>
-            <v-btn v-if="showModal"
-              id="addTaskButton"
-              @click="showModal = false"
-              fab
-              absolute
-              bottom
-              right
-              color="red"
-              dark
-              elevation="5"
-              large
-            >
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
+            <v-fab-transition>
+              <v-btn v-if="!showModal"
+                id="addTaskButton"
+                @click="showModal = true"
+                fab
+                absolute
+                bottom
+                right
+                color="teal"
+                dark
+                elevation="5"
+                large
+                key="open"
+              >
+                <v-icon>mdi-plus</v-icon>
+              </v-btn>
+              <v-btn v-if="showModal"
+                id="addTaskButton"
+                @click="showModal = false"
+                fab
+                absolute
+                bottom
+                right
+                color="red"
+                dark
+                elevation="5"
+                large
+                key="close"
+              >
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-fab-transition>
           </v-sheet>
         </v-sheet>
       </v-col>

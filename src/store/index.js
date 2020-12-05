@@ -8,7 +8,7 @@ import moment from 'moment'
 export default new Vuex.Store({
   state: {
     events: [],
-    selectedDate: new Date().toISOString().substr(0, 10),
+    selectedDate: moment().format('YYYY-MM-DD'),
     calendarType: 'week'
   },
   mutations: {
