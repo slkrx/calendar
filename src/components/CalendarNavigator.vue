@@ -5,7 +5,7 @@
     >
       <template v-if="itIsToday">
         <v-btn
-          @click="updateSelectedDate(moment().format('YYYY-MM-DD'))"
+          @click="updateSelectedDate($moment().format('YYYY-MM-DD'))"
           outlined
           color="primary"
         >
@@ -14,7 +14,7 @@
       </template>
       <template v-else>
         <v-btn
-          @click="updateSelectedDate(moment().format('YYYY-MM-DD'))"
+          @click="updateSelectedDate($moment().format('YYYY-MM-DD'))"
           color="primary"
           dark
           depressed

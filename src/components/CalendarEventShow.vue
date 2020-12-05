@@ -51,13 +51,14 @@
             </v-menu>
         </v-card-text>
         <v-card-actions>
-            <v-btn @click="save">
+            <v-btn @click="save" color="success">
                 Save
             </v-btn>
             <v-btn @click="close">
                 Cancel
             </v-btn>
-            <v-btn @click="deleteevent">
+            <v-spacer></v-spacer>
+            <v-btn @click="deleteevent" color="error">
                 Delete
             </v-btn>
         </v-card-actions>
